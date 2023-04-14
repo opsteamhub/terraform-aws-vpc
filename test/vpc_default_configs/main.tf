@@ -98,7 +98,7 @@ module "vpc_default_configs" {
     #    route_tables_filter = { name = "tag:subnet_layer", values = ["app","internal-lbs"] }
     #  }
     #]
-    vpc_endpoints = {
+    vpc_endpoints = { # usado para sua vpc falar com serviços da amazon de forma privada
       s3 = {
         route_tables_filter = {
           name = "tag:subnet_layer",
@@ -113,15 +113,15 @@ module "vpc_default_configs" {
         } 
         service_type = "interface"
       }
-      "com.amazonaws.vpce.us-east-1.vpce-svc-02bb719817b4acce2" = {
-        #az_ids = ["use1-az2"]
-        exclude_az_ids = ["use1-az1","use1-az3"]
-        service_type = "endpointservice"
-        #subnet_filter = {
-        #  name = "tag:subnet_layer",
-        #  values = ["awssvc"] 
-        #} 
-      }
+      # "com.amazonaws.vpce.us-east-1.vpce-svc-02bb719817b4acce2" = { # conectando em um load balancer
+      #   #az_ids = ["use1-az2"]
+      #   exclude_az_ids = ["use1-az1","use1-az3"]
+      #   service_type = "endpointservice" # 
+      #   #subnet_filter = {
+      #   #  name = "tag:subnet_layer",
+      #   #  values = ["awssvc"] 
+      #   #} 
+      # }
     }
   }
 }
