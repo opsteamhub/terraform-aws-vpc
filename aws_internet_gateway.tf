@@ -2,7 +2,7 @@
 # Deploy IGW 
 #
 resource "aws_internet_gateway" "igw" {
-  for_each = alltrue([ var.vpc_config["vpc"]["create"], var.vpc_config["igw"]["create"] ]) ? tomap(
+  for_each = alltrue([var.vpc_config["vpc"]["create"], var.vpc_config["igw"]["create"]]) ? tomap(
     {
       "vpc" = try(
         aws_vpc.vpc["vpc"],
@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "igw" {
   ) : {}
 
   vpc_id = try(each.value["id"], each.value["vpc_id"])
-  tags   = merge(
+  tags = merge(
     tomap(
       {
         "Name" = upper(
@@ -28,7 +28,7 @@ resource "aws_internet_gateway" "igw" {
         "opsteam:ParentObject" = try(
           each.value["id"],
           each.value["vpc_id"]
-        ) 
+        )
         "opsteam:ParentObjectArn" = try(
           each.value["arn"],
           null
@@ -44,21 +44,21 @@ resource "aws_internet_gateway" "igw" {
 # Deploy Route to IGW for public subnets using subnet layers
 # 
 resource "aws_route" "r_to_igw" {
-  for_each = { 
-      for k,v in zipmap(
-        flatten(
-          [ for x in local.subnets:
-            keys(x)
-          ]
-        ),
-        flatten(
-          [ for x in local.subnets:
-            values(x)
-          ]
-        )
-      ):
-        k => "public_subnet" if v["scope"] == "public" 
-    }
+  for_each = {
+    for k, v in zipmap(
+      flatten(
+        [for x in local.subnets :
+          keys(x)
+        ]
+      ),
+      flatten(
+        [for x in local.subnets :
+          values(x)
+        ]
+      )
+    ) :
+    k => "public_subnet" if v["scope"] == "public"
+  }
 
   route_table_id             = aws_route_table.rt[each.key].id
   destination_prefix_list_id = aws_ec2_managed_prefix_list.managed_prefixlist_internet["vpc"].id

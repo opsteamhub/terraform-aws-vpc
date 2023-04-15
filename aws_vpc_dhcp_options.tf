@@ -13,7 +13,7 @@ resource "aws_vpc_dhcp_options" "dhcp_options" {
   ntp_servers          = each.value["dhcp_options"]["netbios_name_servers"]
   netbios_name_servers = each.value["dhcp_options"]["netbios_name_servers"]
   netbios_node_type    = each.value["dhcp_options"]["netbios_node_type"]
-  tags                 = merge(
+  tags = merge(
     var.vpc_config["dhcp_options"]["tags"],
     local.common_tags,
     tomap(
@@ -39,7 +39,7 @@ resource "aws_vpc_dhcp_options_association" "dhcp_options" {
     {
       "vpc" = merge(var.vpc_config, aws_vpc.vpc["vpc"])
     }
-  ) : {}  
+  ) : {}
   vpc_id          = try(each.value["id"], each.value["vpc_id"])
   dhcp_options_id = aws_vpc_dhcp_options.dhcp_options["vpc"].id
 }

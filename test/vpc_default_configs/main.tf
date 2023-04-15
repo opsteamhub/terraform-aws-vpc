@@ -14,7 +14,7 @@ module "vpc_default_configs" {
         "opsteam:id"       = "0001"
         "opsteam:clientid" = "0001"
         "opsteam:env"      = "production"
-      }      
+      }
     }
     nat_gateway = {
       create = false
@@ -27,31 +27,31 @@ module "vpc_default_configs" {
     }
     subnet_layers = [
       {
-        name = "edge"
-        az_widerange = 4
-        netlength = 8
-        scope = "public"
-        nat_gw_scope = "public"
+        name               = "edge"
+        az_widerange       = 4
+        netlength          = 8
+        scope              = "public"
+        nat_gw_scope       = "public"
         nat_instance_scope = "public"
       },
       {
-        name = "app"
-        netlength = 7
-        netnum = 2
-        has_outbound_internet_access_via_natgw = true
+        name                                         = "app"
+        netlength                                    = 7
+        netnum                                       = 2
+        has_outbound_internet_access_via_natgw       = true
         has_outbound_internet_access_via_natinstance = true
-      },  
+      },
       {
-        name = "db"
-        az_ids = ["use1-az1", "use1-az3"]
-        netnum = 11
+        name      = "db"
+        az_ids    = ["use1-az1", "use1-az3"]
+        netnum    = 11
         netlength = 8
       },
       {
-        name = "awssvc"
-        netprefix = "10.0.16.0/20"
-        netlength = 4
-        network_acl_quarentine = true
+        name                          = "awssvc"
+        netprefix                     = "10.0.16.0/20"
+        netlength                     = 4
+        network_acl_quarentine        = true
         network_acl_quarentine_az_ids = ["use1-az2"]
         network_acl_rules = [
           {
@@ -75,9 +75,9 @@ module "vpc_default_configs" {
         ]
       },
       {
-        name = "internal-lbs"
+        name         = "internal-lbs"
         az_widerange = 2
-        cidr_block = ["10.0.24.0/23","10.0.26.0/23"]
+        cidr_block   = ["10.0.24.0/23", "10.0.26.0/23"]
         #routes = [
         #  {
         #    destination_cidr_block = ["8.8.8.8/32","8.8.4.4/32","8.8.2.2/32", "8.9.9.2/32"]
@@ -89,7 +89,7 @@ module "vpc_default_configs" {
         #    az_ids = ["use1-az1"]
         #  }
         #]
-      },        
+      },
     ]
     #peering_connection = [
     #  {
@@ -101,16 +101,16 @@ module "vpc_default_configs" {
     vpc_endpoints = { # usado para sua vpc falar com serviços da amazon de forma privada
       s3 = {
         route_tables_filter = {
-          name = "tag:subnet_layer",
-          values = ["app","edge"] 
-        } 
+          name   = "tag:subnet_layer",
+          values = ["app", "edge"]
+        }
         service_type = "gateway"
       }
       rds = {
         subnet_filter = {
-          name = "tag:subnet_layer",
-          values = ["awssvc"] 
-        } 
+          name   = "tag:subnet_layer",
+          values = ["awssvc"]
+        }
         service_type = "interface"
       }
       # "com.amazonaws.vpce.us-east-1.vpce-svc-02bb719817b4acce2" = { # conectando em um load balancer

@@ -7,19 +7,19 @@ locals {
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natgw_subnet" if (
+            ) :
+            k => "natgw_subnet" if(
               v["nat_gw_scope"] == "public"
               && contains(
                 coalesce(
@@ -28,7 +28,7 @@ locals {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_gw_scope"] == "public"
               && contains(
                 setsubtract(
@@ -56,7 +56,7 @@ locals {
   #
   # List of subnets that should have route pointing the internet access throught Nat GW
   #
-  has_outbound_internet_access_via_natgw = [ for k,v in local.map_of_subnets:
+  has_outbound_internet_access_via_natgw = [for k, v in local.map_of_subnets :
     k if v["has_outbound_internet_access_via_natgw"] == true
   ]
 
@@ -66,24 +66,24 @@ locals {
 # Deploy EIP allocation
 #
 resource "aws_eip" "natgw_eip" {
-  
+
   for_each = local.subnets != [] ? try(var.vpc_config["nat_gateway"]["create"], false) == true ? toset(
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natgw_subnet" if (
+            ) :
+            k => "natgw_subnet" if(
               v["nat_gw_scope"] == "public"
               && contains(
                 coalesce(
@@ -92,7 +92,7 @@ resource "aws_eip" "natgw_eip" {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_gw_scope"] == "public"
               && contains(
                 setsubtract(
@@ -116,8 +116,8 @@ resource "aws_eip" "natgw_eip" {
     )
   ) : toset([]) : toset([])
 
-  vpc      = true
-  tags   = merge(
+  vpc = true
+  tags = merge(
     tomap(
       {
         "Name" = upper(
@@ -149,19 +149,19 @@ resource "aws_nat_gateway" "nat-gw" {
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natgw_subnet" if (
+            ) :
+            k => "natgw_subnet" if(
               v["nat_gw_scope"] == "public"
               && contains(
                 coalesce(
@@ -170,7 +170,7 @@ resource "aws_nat_gateway" "nat-gw" {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_gw_scope"] == "public"
               && contains(
                 setsubtract(
@@ -197,7 +197,7 @@ resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.natgw_eip[each.key].id
   subnet_id     = aws_subnet.subnets[each.key].id
 
-  tags   = merge(
+  tags = merge(
     tomap(
       {
         "Name" = upper(
@@ -224,7 +224,7 @@ resource "aws_route" "r_natgw" {
 
   route_table_id             = aws_route_table.rt[each.key].id
   destination_prefix_list_id = aws_ec2_managed_prefix_list.managed_prefixlist_internet["vpc"].id
-  nat_gateway_id             = aws_nat_gateway.nat-gw[ element(local.nat_gw_subnets, index(local.has_outbound_internet_access_via_natgw, each.key) ) ].id
+  nat_gateway_id             = aws_nat_gateway.nat-gw[element(local.nat_gw_subnets, index(local.has_outbound_internet_access_via_natgw, each.key))].id
 }
 
 

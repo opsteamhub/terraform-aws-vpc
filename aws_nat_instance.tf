@@ -1,6 +1,6 @@
 data "aws_ami" "natinstance_ami" {
-  for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "natinstance_ami": "1"} : {}
-  
+  for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "natinstance_ami" : "1" } : {}
+
   most_recent = true
   owners      = ["amazon"]
 
@@ -15,23 +15,23 @@ locals {
   #
   # List of subnets to be used to deploy NatGW
   #
-  nat_instances_subnets =  try(
+  nat_instances_subnets = try(
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natinstance_subnet" if (
+            ) :
+            k => "natinstance_subnet" if(
               v["nat_instance_scope"] == "public"
               && contains(
                 coalesce(
@@ -40,7 +40,7 @@ locals {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_instance_scope"] == "public"
               && contains(
                 setsubtract(
@@ -68,21 +68,21 @@ locals {
   #
   # List of subnets that should have route pointing the internet access throught Nat Instance
   #
-  has_outbound_internet_access_via_natinstance = [ for k,v in local.map_of_subnets:
+  has_outbound_internet_access_via_natinstance = [for k, v in local.map_of_subnets :
     k if v["has_outbound_internet_access_via_natinstance"] == true
   ]
-  
+
 }
 
 
 
 resource "aws_security_group" "natinstance_sg" {
-  for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "sg_natinstance": try(aws_vpc.vpc["vpc"], var.vpc_config["vpc"])} : {}
-  
+  for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "sg_natinstance" : try(aws_vpc.vpc["vpc"], var.vpc_config["vpc"]) } : {}
+
   name        = each.key
   description = format("NatInstance SG - %s", each.value["id"])
 
-   vpc_id = each.value["id"]
+  vpc_id = each.value["id"]
 
   ingress {
     from_port        = 0
@@ -102,13 +102,13 @@ resource "aws_security_group" "natinstance_sg" {
 
   tags = merge(
     {
-      "Name" = upper(format("NatInstance-%s", each.value["tags"]["stack"]))
-      "opsteam:ParentObject" = each.value["id"]
-      "opsteam:ParentObjectArn" = each.value["arn"]
+      "Name"                     = upper(format("NatInstance-%s", each.value["tags"]["stack"]))
+      "opsteam:ParentObject"     = each.value["id"]
+      "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
     },
     local.common_tags
-  ) 
+  )
 
 }
 
@@ -121,19 +121,19 @@ resource "aws_network_interface" "natinstance_eni" {
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natinstance_subnet" if (
+            ) :
+            k => "natinstance_subnet" if(
               v["nat_instance_scope"] == "public"
               && contains(
                 coalesce(
@@ -142,7 +142,7 @@ resource "aws_network_interface" "natinstance_eni" {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_instance_scope"] == "public"
               && contains(
                 setsubtract(
@@ -169,7 +169,7 @@ resource "aws_network_interface" "natinstance_eni" {
   subnet_id         = aws_subnet.subnets[each.key].id
   source_dest_check = false
   security_groups   = [aws_security_group.natinstance_sg["sg_natinstance"].id]
-  tags   = merge(
+  tags = merge(
     tomap(
       {
         "Name" = format(
@@ -193,24 +193,24 @@ resource "aws_network_interface" "natinstance_eni" {
 # Deploy EIP allocation
 #
 resource "aws_eip" "natinstance_eip" {
-  
+
   for_each = local.subnets != [] ? try(var.vpc_config["nat_instance"]["create"], false) == true ? toset(
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natinstance_subnet" if (
+            ) :
+            k => "natinstance_subnet" if(
               v["nat_instance_scope"] == "public"
               && contains(
                 coalesce(
@@ -219,7 +219,7 @@ resource "aws_eip" "natinstance_eip" {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_instance_scope"] == "public"
               && contains(
                 setsubtract(
@@ -243,8 +243,8 @@ resource "aws_eip" "natinstance_eip" {
     )
   ) : toset([]) : toset([])
 
-  vpc      = true
-  tags   = merge(
+  vpc = true
+  tags = merge(
     tomap(
       {
         "Name" = upper(
@@ -272,23 +272,23 @@ resource "aws_eip" "natinstance_eip" {
 #
 resource "aws_launch_template" "natinstance_lt" {
 
-for_each = local.subnets != [] ? try(var.vpc_config["nat_instance"]["create"], false) == true ? toset(
+  for_each = local.subnets != [] ? try(var.vpc_config["nat_instance"]["create"], false) == true ? toset(
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "natinstance_subnet" if (
+            ) :
+            k => "natinstance_subnet" if(
               v["nat_instance_scope"] == "public"
               && contains(
                 coalesce(
@@ -297,7 +297,7 @@ for_each = local.subnets != [] ? try(var.vpc_config["nat_instance"]["create"], f
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_instance_scope"] == "public"
               && contains(
                 setsubtract(
@@ -325,7 +325,7 @@ for_each = local.subnets != [] ? try(var.vpc_config["nat_instance"]["create"], f
   image_id      = data.aws_ami.natinstance_ami["natinstance_ami"].id
   instance_type = var.vpc_config["nat_instance"]["instance_type"]
 
-  tags          = local.common_tags
+  tags = local.common_tags
 
   network_interfaces {
     device_index         = 0
@@ -350,19 +350,19 @@ resource "aws_autoscaling_group" "natinstance_asg" {
     element(
       chunklist(
         keys(
-          { for k,v in zipmap(
+          { for k, v in zipmap(
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 keys(x)
               ]
             ),
             flatten(
-              [ for x in local.subnets:
+              [for x in local.subnets :
                 values(x)
               ]
             )
-          ):
-            k => "nat_instance" if (
+            ) :
+            k => "nat_instance" if(
               v["nat_instance_scope"] == "public"
               && contains(
                 coalesce(
@@ -371,7 +371,7 @@ resource "aws_autoscaling_group" "natinstance_asg" {
                 ),
                 v["az_id"]
               )
-            ) && (
+              ) && (
               v["nat_instance_scope"] == "public"
               && contains(
                 setsubtract(
@@ -395,10 +395,10 @@ resource "aws_autoscaling_group" "natinstance_asg" {
     )
   ) : toset([]) : toset([])
 
-  name_prefix         = format("natinstance-%s", each.key)
-  desired_capacity    = 1
-  max_size            = 1
-  min_size            = 1
+  name_prefix      = format("natinstance-%s", each.key)
+  desired_capacity = 1
+  max_size         = 1
+  min_size         = 1
   availability_zones = toset(
     [
       element(
@@ -414,7 +414,7 @@ resource "aws_autoscaling_group" "natinstance_asg" {
     id      = aws_launch_template.natinstance_lt[each.key].id
     version = aws_launch_template.natinstance_lt[each.key].latest_version
   }
-  
+
   lifecycle {
     create_before_destroy = true
   }
@@ -433,14 +433,14 @@ resource "aws_route" "r_natinstance" {
   route_table_id             = aws_route_table.rt[each.key].id
   destination_prefix_list_id = aws_ec2_managed_prefix_list.managed_prefixlist_internet["vpc"].id
   #nat_gateway_id             = aws_nat_gateway.nat-gw[ element(local.nat_instances_subnets, index(local.has_outbound_internet_access_via_natinstance, each.key) ) ].id 
-  network_interface_id       = aws_network_interface.natinstance_eni[
+  network_interface_id = aws_network_interface.natinstance_eni[
     element(
       local.nat_instances_subnets,
       index(
         local.has_outbound_internet_access_via_natinstance,
         each.key
       )
-    ) 
+    )
   ].id
 }
 
@@ -451,6 +451,6 @@ resource "aws_route" "r_natinstance" {
 
 output "teste" {
 
-value = local.nat_instances_subnets
+  value = local.nat_instances_subnets
 
 }

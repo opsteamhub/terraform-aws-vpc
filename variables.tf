@@ -29,7 +29,7 @@ variable "vpc_config" {
                 }
               )
             )
-            tags                 = optional(map(string))
+            tags = optional(map(string))
 
           }
         )
@@ -83,10 +83,10 @@ variable "vpc_config" {
         list(
           object(
             {
-              accepter      = optional(
+              accepter = optional(
                 object(
                   {
-                   allow_remote_vpc_dns_resolution  = optional(bool, false)
+                    allow_remote_vpc_dns_resolution = optional(bool, false)
                   }
                 )
               )
@@ -95,16 +95,16 @@ variable "vpc_config" {
               peer_owner_id = optional(string)
               peer_region   = optional(string)
               peer_vpc_id   = optional(string)
-              requester     = optional(
+              requester = optional(
                 object(
                   {
-                   allow_remote_vpc_dns_resolution  = optional(bool, false)
+                    allow_remote_vpc_dns_resolution = optional(bool, false)
                   }
                 )
               )
-              route_tables_filter  = optional(any)
-              tags                 = optional(map(string))
-              vpc_id               = optional(string)
+              route_tables_filter       = optional(any)
+              tags                      = optional(map(string))
+              vpc_id                    = optional(string)
               vpc_peering_connection_id = optional(string)
             }
           )
@@ -114,22 +114,22 @@ variable "vpc_config" {
         list(
           object(
             {
-              az_widerange                                    = optional(string, 3)
-              az_ids                                          = optional(set(string))
-              cidr_block                                      = optional(list(string))
-              create                                          = optional(bool, true)
-              enable_resource_name_dns_a_record_on_launch     = optional(bool, false)
-              has_outbound_internet_access_via_natgw          = optional(bool, false)
-              has_outbound_internet_access_via_natinstance    = optional(bool, false)
-              map_public_ip_on_launch                         = optional(bool, false)
-              name                                            = optional(string)
-              nat_gw_scope                                    = optional(string)
-              nat_instance_scope                              = optional(string)
-              netprefix                                       = optional(string)
-              netlength                                       = optional(string, 0)
-              netnum                                          = optional(string, 0)
-              network_acl_quarentine                          = optional(bool, false)
-              network_acl_quarentine_az_ids                   = optional(set(string)) 
+              az_widerange                                 = optional(string, 3)
+              az_ids                                       = optional(set(string))
+              cidr_block                                   = optional(list(string))
+              create                                       = optional(bool, true)
+              enable_resource_name_dns_a_record_on_launch  = optional(bool, false)
+              has_outbound_internet_access_via_natgw       = optional(bool, false)
+              has_outbound_internet_access_via_natinstance = optional(bool, false)
+              map_public_ip_on_launch                      = optional(bool, false)
+              name                                         = optional(string)
+              nat_gw_scope                                 = optional(string)
+              nat_instance_scope                           = optional(string)
+              netprefix                                    = optional(string)
+              netlength                                    = optional(string, 0)
+              netnum                                       = optional(string, 0)
+              network_acl_quarentine                       = optional(bool, false)
+              network_acl_quarentine_az_ids                = optional(set(string))
               network_acl_rules = optional(
                 list(
                   object(
@@ -148,8 +148,8 @@ variable "vpc_config" {
                   )
                 )
               )
-              private_dns_hostname_type_on_launch             = optional(string)
-              routes                                          = optional(
+              private_dns_hostname_type_on_launch = optional(string)
+              routes = optional(
                 list(
                   object(
                     {
@@ -160,9 +160,9 @@ variable "vpc_config" {
                   )
                 )
               )
-              scope                          = optional(string, "private")
-              vpc_id                        = optional(string)
-              tags                          = optional(map(string))
+              scope  = optional(string, "private")
+              vpc_id = optional(string)
+              tags   = optional(map(string))
             }
           )
         )
@@ -187,14 +187,14 @@ variable "vpc_config" {
         map(
           object(
             {
-              az_ids              = optional(set(string))
-              exclude_az_ids      = optional(set(string))
-              service_type        = optional(string) 
-              auto_accept         = optional(bool, false)
-              policy              = optional(string)
-              private_dns_enabled = optional(string, true)
+              az_ids                               = optional(set(string))
+              exclude_az_ids                       = optional(set(string))
+              service_type                         = optional(string)
+              auto_accept                          = optional(bool, false)
+              policy                               = optional(string)
+              private_dns_enabled                  = optional(string, true)
               endpoint_service_private_dns_enabled = optional(string, false)
-              dns_options         = optional(
+              dns_options = optional(
                 object(
                   {
                     dns_record_ip_type = optional(string)
@@ -204,7 +204,7 @@ variable "vpc_config" {
                   dns_record_ip_type = "ipv4"
                 }
               )
-              ip_address_type     = optional(string, "ipv4")
+              ip_address_type = optional(string, "ipv4")
               route_tables_filter = optional(
                 object(
                   {
@@ -216,16 +216,16 @@ variable "vpc_config" {
               listener_ports = optional(
                 object(
                   {
-                    from_port        = optional(string)
-                    to_port          = optional(string)
-                    protocol         = optional(string)
-                    security_groups  = optional(set(string))
+                    from_port       = optional(string)
+                    to_port         = optional(string)
+                    protocol        = optional(string)
+                    security_groups = optional(set(string))
                   }
                 ),
                 {
-                  from_port        = "443"
-                  to_port          = "443"
-                  protocol         = "tcp"
+                  from_port = "443"
+                  to_port   = "443"
+                  protocol  = "tcp"
                 }
               )
               subnet_filter = optional(
@@ -236,11 +236,11 @@ variable "vpc_config" {
                   }
                 ),
                 {
-                  name = "tag:subnet_layer",
-                  values = ["awssvc"] 
+                  name   = "tag:subnet_layer",
+                  values = ["awssvc"]
                 }
               )
-              tags = optional(map(string)) 
+              tags = optional(map(string))
             }
           )
         )

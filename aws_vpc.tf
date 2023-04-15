@@ -3,7 +3,7 @@
 # Deploy VPC
 #
 resource "aws_vpc" "vpc" {
-  for_each = var.vpc_config["vpc"]["create"] ? tomap( { "vpc" = var.vpc_config["vpc"]} ) : {}
+  for_each                             = var.vpc_config["vpc"]["create"] ? tomap({ "vpc" = var.vpc_config["vpc"] }) : {}
   cidr_block                           = each.value["cidr_block"]
   enable_dns_hostnames                 = each.value["enable_dns_hostnames"]
   enable_dns_support                   = each.value["enable_dns_support"]
@@ -11,7 +11,7 @@ resource "aws_vpc" "vpc" {
   instance_tenancy                     = each.value["instance_tenancy"]
   ipv4_ipam_pool_id                    = each.value["ipv4_ipam_pool_id"]
   ipv4_netmask_length                  = each.value["ipv4_ipam_pool_id"] != null ? var.vpc_config["vpc"]["ipv4_netmask_length"] : null
-  tags                                 = merge(   
+  tags = merge(
     local.common_tags,
     {
       Name = upper(
@@ -28,10 +28,10 @@ resource "aws_vpc" "vpc" {
 
 
 resource "aws_default_network_acl" "default_nacl_quarentine_subnets" {
-  for_each = var.vpc_config["vpc"]["create"] ? tomap( { "vpc" = aws_vpc.vpc["vpc"]} ) : {}
-  
+  for_each = var.vpc_config["vpc"]["create"] ? tomap({ "vpc" = aws_vpc.vpc["vpc"] }) : {}
+
   default_network_acl_id = each.value["default_network_acl_id"]
-  
+
   ingress {
     protocol   = -1
     rule_no    = 1
@@ -49,10 +49,10 @@ resource "aws_default_network_acl" "default_nacl_quarentine_subnets" {
     from_port  = 0
     to_port    = 0
   }
-  
-  tags = merge(   
+
+  tags = merge(
     {
-      "Name" = upper(format("nacl-quarentine-%s", each.value["tags"]["stack"]))
+      "Name"                     = upper(format("nacl-quarentine-%s", each.value["tags"]["stack"]))
       "opsteam:ParentObject"     = each.value["id"]
       "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
@@ -75,13 +75,13 @@ resource "aws_default_route_table" "default_routetable" {
   default_route_table_id = each.value["default_route_table_id"]
   tags = merge(
     {
-      "Name" = upper(format("main-routetable-%s", each.value["tags"]["stack"]))
+      "Name"                     = upper(format("main-routetable-%s", each.value["tags"]["stack"]))
       "opsteam:ParentObject"     = each.value["id"]
       "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
     },
     local.common_tags
-  ) 
+  )
 }
 
 resource "aws_security_group" "sg_allowlist" {
@@ -90,7 +90,7 @@ resource "aws_security_group" "sg_allowlist" {
       "vpc" = aws_vpc.vpc["vpc"]
     }
   ) : {}
-  
+
   name        = upper(format("%s-allowlist", each.value["id"]))
   description = format("AllowList SG - %s", each.value["id"])
   vpc_id      = each.value["id"]
@@ -113,18 +113,18 @@ resource "aws_security_group" "sg_allowlist" {
 
   tags = merge(
     {
-      "Name" = upper(format("allowlist-%s", each.value["tags"]["stack"]))
-      "opsteam:ParentObject" = each.value["id"]
-      "opsteam:ParentObjectArn" = each.value["arn"]
+      "Name"                     = upper(format("allowlist-%s", each.value["tags"]["stack"]))
+      "opsteam:ParentObject"     = each.value["id"]
+      "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
     },
     local.common_tags
-  ) 
+  )
 
 }
 
 resource "aws_default_security_group" "default_sg_denylist" {
-  
+
   for_each = var.vpc_config["vpc"]["create"] ? tomap(
     {
       "vpc" = aws_vpc.vpc["vpc"]
@@ -132,28 +132,28 @@ resource "aws_default_security_group" "default_sg_denylist" {
   ) : {}
 
   vpc_id = each.value["id"]
-  
+
   tags = merge(
     {
-      "Name" = upper(format("denylist-%s", each.value["tags"]["stack"]))
-      "opsteam:ParentObject" = each.value["id"]
-      "opsteam:ParentObjectArn" = each.value["arn"]
+      "Name"                     = upper(format("denylist-%s", each.value["tags"]["stack"]))
+      "opsteam:ParentObject"     = each.value["id"]
+      "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
     },
     local.common_tags
-  ) 
+  )
 }
 
 
 
 resource "aws_ec2_managed_prefix_list" "managed_prefixlist_internet" {
-  
+
   for_each = var.vpc_config["vpc"]["create"] ? tomap(
     {
       "vpc" = aws_vpc.vpc["vpc"]
     }
   ) : {}
-  
+
   name           = upper(format("prefixlist-internet-%s", each.value["tags"]["stack"]))
   address_family = "IPv4"
   max_entries    = 1
@@ -165,12 +165,12 @@ resource "aws_ec2_managed_prefix_list" "managed_prefixlist_internet" {
 
   tags = merge(
     {
-      "Name" = upper(format("prefixlist-internet-%s", each.value["tags"]["stack"]))
-      "opsteam:ParentObject" = each.value["id"]
-      "opsteam:ParentObjectArn" = each.value["arn"]
+      "Name"                     = upper(format("prefixlist-internet-%s", each.value["tags"]["stack"]))
+      "opsteam:ParentObject"     = each.value["id"]
+      "opsteam:ParentObjectArn"  = each.value["arn"]
       "opsteam:ParentObjectType" = "VPC"
     },
     local.common_tags
-  ) 
+  )
 
 }
