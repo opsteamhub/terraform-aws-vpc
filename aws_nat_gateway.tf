@@ -226,19 +226,3 @@ resource "aws_route" "r_natgw" {
   destination_prefix_list_id = aws_ec2_managed_prefix_list.managed_prefixlist_internet["vpc"].id
   nat_gateway_id             = aws_nat_gateway.nat-gw[element(local.nat_gw_subnets, index(local.has_outbound_internet_access_via_natgw, each.key))].id
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

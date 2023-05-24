@@ -445,12 +445,6 @@ resource "aws_route" "r_natinstance" {
 }
 
 
-
-
-
-
-output "teste" {
-
-  value = local.nat_instances_subnets
-
-}
+# output "teste" {
+#   value = local.nat_instances_subnets
+# }

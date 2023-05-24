@@ -128,7 +128,7 @@ variable "vpc_config" {
               netprefix                                    = optional(string)
               netlength                                    = optional(string, 0)
               netnum                                       = optional(string, 0)
-              network_acl_quarentine                       = optional(bool, false)
+              network_acl_quarentine                       = optional(bool, false) # bloqueia acesso nas NACLs, mas deixa os servicos ligados
               network_acl_quarentine_az_ids                = optional(set(string))
               network_acl_rules = optional(
                 list(

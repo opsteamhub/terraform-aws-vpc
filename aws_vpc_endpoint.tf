@@ -260,9 +260,6 @@ data "aws_subnets" "subnets-vpce-interface" {
 }
 
 
-
-
-
 #
 # Deploy VPC Endpoint type Interface
 #

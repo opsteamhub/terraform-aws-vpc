@@ -51,7 +51,7 @@ module "vpc_default_configs" {
         name                          = "awssvc"
         netprefix                     = "10.0.16.0/20"
         netlength                     = 4
-        network_acl_quarentine        = true
+        network_acl_quarentine        = true # bloqueia acesso nas NACLs, mas deixa os servicos ligados
         network_acl_quarentine_az_ids = ["use1-az2"]
         network_acl_rules = [
           {
