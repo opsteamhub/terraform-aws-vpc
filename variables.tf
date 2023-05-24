@@ -110,6 +110,52 @@ variable "vpc_config" {
           )
         )
       )
+      security_groups = optional(
+        list(
+          object(
+            {
+              description = optional(string)
+              egress = optional(
+                list(
+                  object(
+                    {
+                      description      = optional(string)
+                      from_port        = optional(string)
+                      to_port          = optional(string)
+                      protocol         = optional(string)
+                      cidr_blocks      = optional(set(string))
+                      ipv6_cidr_blocks = optional(set(string))
+                      prefix_list_ids  = optional(set(string))
+                      security_groups  = optional(set(string))
+                    }
+                  )
+                )
+              )
+              ingress = optional(
+                list(
+                  object(
+                    {
+                      description      = optional(string)
+                      from_port        = optional(string)
+                      to_port          = optional(string)
+                      protocol         = optional(string)
+                      cidr_blocks      = optional(set(string))
+                      ipv6_cidr_blocks = optional(set(string))
+                      prefix_list_ids  = optional(set(string))
+                      security_groups  = optional(set(string))
+                    }
+                  )
+                )
+              )
+              name_prefix            = optional(string)
+              name                   = optional(string)
+              revoke_rules_on_delete = optional(string)
+              vpc_id                 = optional(string)
+              tags                   = optional(map(string))
+            }
+          )
+        )
+      )
       subnet_layers = optional(
         list(
           object(

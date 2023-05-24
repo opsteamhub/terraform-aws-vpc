@@ -12,6 +12,7 @@ resource "aws_internet_gateway" "igw" {
   ) : {}
 
   vpc_id = try(each.value["id"], each.value["vpc_id"])
+
   tags = merge(
     tomap(
       {

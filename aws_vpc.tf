@@ -175,10 +175,3 @@ resource "aws_ec2_managed_prefix_list" "managed_prefixlist_internet" {
 
 }
 
-#
-# Expose VPC ID
-#
-output "vpc_id" {
-  description = "The ID of the VPC"
-  value       = aws_vpc.vpc.id
-}
