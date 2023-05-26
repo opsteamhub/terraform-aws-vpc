@@ -2,15 +2,15 @@ variable "vpc_config" {
   description = "AWS VPC configurations"
   type = object(
     {
-      dhcp_options = optional(
+      dhcp_options = optional( # DHCP options set for the VPC
         object(
           {
-            domain_name          = optional(string, "ec2.internal")
-            domain_name_servers  = optional(set(string), ["AmazonProvidedDNS"])
-            ntp_servers          = optional(set(string))
-            netbios_name_servers = optional(set(string))
-            netbios_node_type    = optional(string)
-            tags                 = optional(map(string))
+            domain_name          = optional(string, "ec2.internal")             # Domain name for DHCP options set
+            domain_name_servers  = optional(set(string), ["AmazonProvidedDNS"]) # DNS name servers for DHCP options set
+            ntp_servers          = optional(set(string))                        # NTP servers for DHCP options set
+            netbios_name_servers = optional(set(string))                        # NetBIOS name servers for DHCP options set
+            netbios_node_type    = optional(string)                             # NetBIOS node type for DHCP options set
+            tags                 = optional(map(string))                        # Tags for DHCP options set
           }
         ),
         {
@@ -18,254 +18,254 @@ variable "vpc_config" {
           domain_name_servers = ["AmazonProvidedDNS"]
         }
       )
-      global = optional(
+      global = optional( # Global VPC settings
         object(
           {
-            az = optional(
+            az = optional( # Availability Zone settings
               object(
                 {
-                  exclude_zone_ids = optional(set(string))
-                  state            = optional(string)
+                  exclude_zone_ids = optional(set(string)) # List of excluded Zone IDs
+                  state            = optional(string)      # The state of the Availability Zone
                 }
               )
             )
-            tags = optional(map(string))
+            tags = optional(map(string)) # Tags for the global VPC settings
 
           }
         )
       )
-      igw = optional(
+      igw = optional( # Internet Gateway settings for the VPC
         object(
           {
-            create = optional(bool, true)
-            vpc_id = optional(string)
+            create = optional(bool, true) # If 'true', will create a new Internet Gateway
+            vpc_id = optional(string)     # The ID of an existing VPC to associate with the Internet Gateway
           }
         ),
         {
           create = true
         }
       )
-      ipam = optional(
+      ipam = optional( # IPAM pool settings for the VPC
         object(
           {
-            ipam_pool_id = optional(string)
+            ipam_pool_id = optional(string) # The ID of the IPAM pool
           }
         )
       )
-      nat_gateway = optional(
+      nat_gateway = optional( # NAT Gateway configuration for the VPC
         object(
           {
-            create         = optional(bool, false)
-            az_widerange   = optional(string, 2)
-            az_ids         = optional(set(string))
-            exclude_az_ids = optional(set(string))
+            create         = optional(bool, false) # If 'true', will create a new NAT Gateway
+            az_widerange   = optional(string, 2)   # The wider range of Availability Zones to use for the NAT Gateway
+            az_ids         = optional(set(string)) # List of Availability Zone IDs to use for the NAT Gateway
+            exclude_az_ids = optional(set(string)) # List of Availability Zone IDs to exclude from use for the NAT Gateway
           }
         ),
         {
-          create = false
+          create = false # NAT instance configuration for the VPC
         }
       )
       nat_instance = optional(
         object(
           {
-            create         = optional(bool, false)
-            az_widerange   = optional(string, 2)
-            az_ids         = optional(set(string))
-            exclude_az_ids = optional(set(string))
-            instance_type  = optional(string, "t3.medium")
+            create         = optional(bool, false)         # If 'true', will create a new NAT instance
+            az_widerange   = optional(string, 2)           # The wider range of Availability Zones to use for the NAT instance
+            az_ids         = optional(set(string))         # List of Availability Zone IDs to use for the NAT instance
+            exclude_az_ids = optional(set(string))         # List of Availability Zone IDs to exclude from use for the NAT instance
+            instance_type  = optional(string, "t3.medium") # The instance type of the NAT instance
           }
         ),
         {
           create = false
         }
       )
-      peering_connection = optional(
+      peering_connection = optional( # VPC peering connection configuration
         list(
           object(
             {
-              accepter = optional(
+              accepter = optional( # Accepter VPC peering settings
                 object(
                   {
-                    allow_remote_vpc_dns_resolution = optional(bool, false)
+                    allow_remote_vpc_dns_resolution = optional(bool, false) # If 'true', will allow the accepter VPC to resolve DNS from the peered VPC
                   }
                 )
               )
-              auto_accept   = optional(bool, true)
-              cidr_blocks   = optional(set(string))
-              peer_owner_id = optional(string)
-              peer_region   = optional(string)
-              peer_vpc_id   = optional(string)
-              requester = optional(
+              auto_accept   = optional(bool, true)  # If 'true', will automatically accept the peering connection
+              cidr_blocks   = optional(set(string)) # List of CIDR blocks for the peering connection
+              peer_owner_id = optional(string)      # The AWS account ID of the owner of the peered VPC
+              peer_region   = optional(string)      # The region in which the peered VPC is located
+              peer_vpc_id   = optional(string)      # The ID of the peered VPC
+              requester = optional(                 # Requester VPC peering settings
                 object(
                   {
-                    allow_remote_vpc_dns_resolution = optional(bool, false)
+                    allow_remote_vpc_dns_resolution = optional(bool, false) # If 'true', will allow the requester VPC to resolve DNS from the peered VPC
                   }
                 )
               )
-              route_tables_filter       = optional(any)
-              tags                      = optional(map(string))
-              vpc_id                    = optional(string)
-              vpc_peering_connection_id = optional(string)
+              route_tables_filter       = optional(any)         # Route table filter settings for the peering connection
+              tags                      = optional(map(string)) # Tags for the VPC peering connection
+              vpc_id                    = optional(string)      # The ID of the VPC initiating the peering connection
+              vpc_peering_connection_id = optional(string)      # The ID of the VPC peering connection
             }
           )
         )
       )
-      security_groups = optional(
+      security_groups = optional( # Security group configuration for the VPC
         list(
           object(
             {
-              description = optional(string)
-              egress = optional(
+              description = optional(string) # Description of the security group
+              egress = optional(             # Egress rule configuration for the security group
                 list(
                   object(
                     {
-                      description      = optional(string)
-                      from_port        = optional(string)
-                      to_port          = optional(string)
-                      protocol         = optional(string)
-                      cidr_blocks      = optional(set(string))
-                      ipv6_cidr_blocks = optional(set(string))
-                      prefix_list_ids  = optional(set(string))
-                      security_groups  = optional(set(string))
+                      description      = optional(string)      # Description of the egress rule
+                      from_port        = optional(string)      # Starting port range for the egress rule
+                      to_port          = optional(string)      # Ending port range for the egress rule
+                      protocol         = optional(string)      # Protocol to use for the egress rule
+                      cidr_blocks      = optional(set(string)) # List of CIDR blocks for the egress rule
+                      ipv6_cidr_blocks = optional(set(string)) # List of IPv6 CIDR blocks for the egress rule
+                      prefix_list_ids  = optional(set(string)) # List of prefix list IDs for the egress rule
+                      security_groups  = optional(set(string)) # List of security groups to associate with the egress rule
                     }
                   )
                 )
               )
-              ingress = optional(
+              ingress = optional( # Ingress rule configuration for the security group
                 list(
                   object(
                     {
-                      description      = optional(string)
-                      from_port        = optional(string)
-                      to_port          = optional(string)
-                      protocol         = optional(string)
-                      cidr_blocks      = optional(set(string))
-                      ipv6_cidr_blocks = optional(set(string))
-                      prefix_list_ids  = optional(set(string))
-                      security_groups  = optional(set(string))
+                      description      = optional(string)      # Description of the ingress rule
+                      from_port        = optional(string)      # Starting port range for the ingress rule
+                      to_port          = optional(string)      # Ending port range for the ingress rule
+                      protocol         = optional(string)      # Protocol to use for the ingress rule
+                      cidr_blocks      = optional(set(string)) # List of CIDR blocks for the ingress rule
+                      ipv6_cidr_blocks = optional(set(string)) # List of IPv6 CIDR blocks for the ingress rule
+                      prefix_list_ids  = optional(set(string)) # List of prefix list IDs for the ingress rule
+                      security_groups  = optional(set(string)) # List of security groups to associate with the ingress rule
                     }
                   )
                 )
               )
-              name_prefix            = optional(string)
-              name                   = optional(string)
-              revoke_rules_on_delete = optional(string)
-              vpc_id                 = optional(string)
-              tags                   = optional(map(string))
+              name_prefix            = optional(string)      # Prefix for the security group name
+              name                   = optional(string)      # Name of the security group
+              revoke_rules_on_delete = optional(string)      # If 'true', will revoke all rules when the security group is deleted.  This is normally not needed, however certain AWS services such as Elastic Map Reduce may automatically add required rules to security groups used with the service, and those rules may contain a cyclic dependency that prevent the security groups from being destroyed without removing the dependency first. Default false.
+              vpc_id                 = optional(string)      # The ID of the VPC for the security group
+              tags                   = optional(map(string)) # Tags for the security group
             }
           )
         )
       )
-      subnet_layers = optional(
+      subnet_layers = optional( # Subnet layers configuration for the VPC
         list(
           object(
             {
-              az_widerange                                 = optional(string, 3)
-              az_ids                                       = optional(set(string))
-              cidr_block                                   = optional(list(string))
-              create                                       = optional(bool, true)
-              enable_resource_name_dns_a_record_on_launch  = optional(bool, false)
-              has_outbound_internet_access_via_natgw       = optional(bool, false)
-              has_outbound_internet_access_via_natinstance = optional(bool, false)
-              map_public_ip_on_launch                      = optional(bool, false)
-              name                                         = optional(string)
-              nat_gw_scope                                 = optional(string)
-              nat_instance_scope                           = optional(string)
-              netprefix                                    = optional(string)
-              netlength                                    = optional(string, 0)
-              netnum                                       = optional(string, 0)
-              network_acl_quarentine                       = optional(bool, false) # bloqueia acesso nas NACLs, mas deixa os servicos ligados
-              network_acl_quarentine_az_ids                = optional(set(string))
-              network_acl_rules = optional(
+              az_widerange                                 = optional(string, 3)    # The wider range of Availability Zones to use for the subnet
+              az_ids                                       = optional(set(string))  # List of Availability Zone IDs to use for the subnet
+              cidr_block                                   = optional(list(string)) # CIDR block for the subnet
+              create                                       = optional(bool, true)   # If 'true', will create a new subnet
+              enable_resource_name_dns_a_record_on_launch  = optional(bool, false)  # If 'true', will enable DNS A record on launch
+              has_outbound_internet_access_via_natgw       = optional(bool, false)  # If 'true', will have outbound internet access via NAT Gateway
+              has_outbound_internet_access_via_natinstance = optional(bool, false)  # If 'true', will have outbound internet access via NAT instance
+              map_public_ip_on_launch                      = optional(bool, false)  # If 'true', will map public IP on launch
+              name                                         = optional(string)       # Name of the subnet
+              nat_gw_scope                                 = optional(string)       # Scope of the NAT Gateway
+              nat_instance_scope                           = optional(string)       # Scope of the NAT instance
+              netprefix                                    = optional(string)       # Prefix for the network
+              netlength                                    = optional(string, 0)    # Length of the network
+              netnum                                       = optional(string, 0)    # Number of the network
+              network_acl_quarentine                       = optional(bool, false)  # If 'true', will block access in network ACLs, but keeps services running. Ou seja, bloqueia acesso nas NACLs, mas deixa os servicos ligados
+              network_acl_quarentine_az_ids                = optional(set(string))  # List of Availability Zone IDs for the network ACL quarantine
+              network_acl_rules = optional(                                         # Network ACL rules configuration
                 list(
                   object(
                     {
-                      action          = optional(string)
-                      egress          = optional(bool, false)
-                      cidr_block      = optional(string)
-                      from_port       = optional(string)
-                      icmp_code       = optional(string)
-                      icmp_type       = optional(string)
-                      ipv6_cidr_block = optional(string)
-                      protocol        = optional(string)
-                      rule_no         = optional(string)
-                      to_port         = optional(string)
+                      action          = optional(string)      # Action for the ACL rule
+                      egress          = optional(bool, false) # If 'true', is an egress rule
+                      cidr_block      = optional(string)      # CIDR block for the ACL rule
+                      from_port       = optional(string)      # Starting port range for the ACL rule
+                      icmp_code       = optional(string)      # ICMP code for the ACL rule
+                      icmp_type       = optional(string)      # ICMP type for the ACL rule
+                      ipv6_cidr_block = optional(string)      # IPv6 CIDR block for the ACL rule
+                      protocol        = optional(string)      # Protocol for the ACL rule
+                      rule_no         = optional(string)      # Rule number
+                      to_port         = optional(string)      # Ending port range for the ACL rule
                     }
                   )
                 )
               )
-              private_dns_hostname_type_on_launch = optional(string)
-              routes = optional(
+              private_dns_hostname_type_on_launch = optional(string) # Type of private DNS hostname on launch
+              routes = optional(                                     # Route configuration for the subnet
                 list(
                   object(
                     {
-                      az_ids                 = optional(set(string))
-                      destination_cidr_block = optional(list(string))
-                      target                 = optional(string)
+                      az_ids                 = optional(set(string))  # List of Availability Zone IDs for the route
+                      destination_cidr_block = optional(list(string)) # Destination CIDR block for the route
+                      target                 = optional(string)       # Target for the route
                     }
                   )
                 )
               )
-              scope  = optional(string, "private")
-              vpc_id = optional(string)
-              tags   = optional(map(string))
+              scope  = optional(string, "private") # Scope of the subnet ('private' by default)
+              vpc_id = optional(string)            # VPC ID for the subnet
+              tags   = optional(map(string))       # Tags for the subnet
             }
           )
         )
       )
-      vpc = optional(
+      vpc = optional( # VPC configuration
         object(
           {
-            create                               = optional(bool, true)
-            cidr_block                           = optional(string)
-            enable_dns_hostnames                 = optional(bool, true)
-            enable_dns_support                   = optional(bool, true)
-            enable_network_address_usage_metrics = optional(bool, false)
-            instance_tenancy                     = optional(string, "default")
-            ipv4_ipam_pool_id                    = optional(string)
-            ipv4_netmask_length                  = optional(string, 20)
-            tags                                 = optional(map(string))
-            vpc_id                               = optional(string)
+            create                               = optional(bool, true)        # If 'true', will create a new VPC (if 'false', the vpc_id will be used to locate an existing VPC). Ou seja, se false, não vai criar VPC, e trabalhado com o vpc_id (item abixo) que ponta qual é a VPC para trabalho.
+            cidr_block                           = optional(string)            # CIDR block for the VPC
+            enable_dns_hostnames                 = optional(bool, true)        # If 'true', will enable DNS hostnames for the VPC
+            enable_dns_support                   = optional(bool, true)        # If 'true', will enable DNS support for the VPC
+            enable_network_address_usage_metrics = optional(bool, false)       # If 'true', will enable network address usage metrics for the VPC
+            instance_tenancy                     = optional(string, "default") # Instance tenancy for the VPC ('default' by default)
+            ipv4_ipam_pool_id                    = optional(string)            # IPv4 IPAM pool ID for the VPC
+            ipv4_netmask_length                  = optional(string, 20)        # IPv4 netmask length for the VPC
+            tags                                 = optional(map(string))       # Tags for the VPC
+            vpc_id                               = optional(string)            # VPC ID (used if 'create' is 'false')
           }
         )
       )
-      vpc_endpoints = optional(
+      vpc_endpoints = optional( # VPC endpoint configuration
         map(
           object(
             {
-              az_ids                               = optional(set(string))
-              exclude_az_ids                       = optional(set(string))
-              service_type                         = optional(string)
-              auto_accept                          = optional(bool, false)
-              policy                               = optional(string)
-              private_dns_enabled                  = optional(string, true)
-              endpoint_service_private_dns_enabled = optional(string, false)
-              dns_options = optional(
+              az_ids                               = optional(set(string))   # List of Availability Zone IDs for the endpoint
+              exclude_az_ids                       = optional(set(string))   # List of Availability Zone IDs to exclude from the endpoint
+              service_type                         = optional(string)        # Service type for the endpoint
+              auto_accept                          = optional(bool, false)   # If 'true', will auto accept the endpoint
+              policy                               = optional(string)        # Policy for the endpoint
+              private_dns_enabled                  = optional(string, true)  # If 'true', will enable private DNS for the endpoint
+              endpoint_service_private_dns_enabled = optional(string, false) # If 'true', will enable private DNS for the endpoint service
+              dns_options = optional(                                        # DNS options for the endpoint
                 object(
                   {
-                    dns_record_ip_type = optional(string)
+                    dns_record_ip_type = optional(string) # DNS record IP type for the endpoint
                   }
                 ),
                 {
                   dns_record_ip_type = "ipv4"
                 }
               )
-              ip_address_type = optional(string, "ipv4")
-              route_tables_filter = optional(
+              ip_address_type = optional(string, "ipv4") # IP address type for the endpoint
+              route_tables_filter = optional(            # Route table filter for the endpoint
                 object(
                   {
-                    name   = optional(string)
-                    values = optional(set(string))
+                    name   = optional(string)      # Name of the route table filter
+                    values = optional(set(string)) # Values for the route table filter
                   }
                 )
               )
-              listener_ports = optional(
+              listener_ports = optional( # Listener ports for the endpoint
                 object(
                   {
-                    from_port       = optional(string)
-                    to_port         = optional(string)
-                    protocol        = optional(string)
-                    security_groups = optional(set(string))
+                    from_port       = optional(string)      # Starting port for the listener
+                    to_port         = optional(string)      # Ending port for the listener
+                    protocol        = optional(string)      # Protocol for the listener
+                    security_groups = optional(set(string)) # Security groups for the listener
                   }
                 ),
                 {
@@ -274,11 +274,11 @@ variable "vpc_config" {
                   protocol  = "tcp"
                 }
               )
-              subnet_filter = optional(
+              subnet_filter = optional( # Subnet filter for the endpoint
                 object(
                   {
-                    name   = optional(string)
-                    values = optional(set(string))
+                    name   = optional(string)      # Name of the subnet filter
+                    values = optional(set(string)) # Values for the subnet filter
                   }
                 ),
                 {
