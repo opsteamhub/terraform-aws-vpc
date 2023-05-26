@@ -39,7 +39,23 @@ resource "aws_security_group" "security_group" {
       description      = egress.value.description
     }
   }
-
   revoke_rules_on_delete = each.value.revoke_rules_on_delete
-  tags                   = each.value.tags
+  tags = merge(
+    tomap(
+      {
+        "Name" = upper(
+          format(
+            "sg-%s",
+            coalesce(
+              try(each.value.name, null),
+              lookup(var.vpc_config.global.tags, "stack", ""),
+              "terraform-created"
+            )
+          )
+        )
+      }
+    ),
+    each.value.tags
+  )
 }
+

@@ -60,18 +60,14 @@ When dealing with sensitive information in Terraform, it's paramount to prioriti
 
 ## References
 
-HashiCorp (2021) Resource: aws_vpc. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc. (Accessed: 2023-04-14).
+HashiCorp (2023) Resource: aws_vpc. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc. (Accessed: 2023-04-14).
 
-HashiCorp (2021) Resource: aws_subnet. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet. (Accessed: 2023-04-14).
+HashiCorp (2023) Resource: aws_subnet. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet. (Accessed: 2023-04-14).
 
-HashiCorp (2021) Resource: aws_internet_gateway. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway. (Accessed: 2023-04-14).
+HashiCorp (2023) Resource: aws_internet_gateway. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway. (Accessed: 2023-04-14).
 
-HashiCorp (2021) Resource: aws_nat_gateway. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway. (Accessed: 2023-04-14).
+HashiCorp (2023) Resource: aws_nat_gateway. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/nat_gateway. (Accessed: 2023-04-14).
 
-HashiCorp (2021) Resource: aws_vpc_peering_connection. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection. (Accessed: 2023-04-14).
+HashiCorp (2023) Resource: aws_vpc_peering_connection. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_peering_connection. (Accessed: 2023-04-14).
 
-HashiCorp (2021) Resource: aws_vpc_endpoint. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint. (Accessed: 2023-04-14).
-
-```
-
-```
+HashiCorp (2023) Resource: aws_vpc_endpoint. Retrieved from: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint. (Accessed: 2023-04-14).

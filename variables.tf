@@ -213,6 +213,22 @@ variable "vpc_config" {
           )
         )
       )
+      transit_gateway = optional( # Security group configuration for the VPC
+        object(
+          {
+            amazon_side_asn                 = optional(string)      # Private Autonomous System Number (ASN) for the Amazon side of a BGP session. The range is 64512 to 65534 for 16-bit ASNs and 4200000000 to 4294967294 for 32-bit ASNs. Default value: 64512.
+            auto_accept_shared_attachments  = optional(string)      #  Whether resource attachment requests are automatically accepted. Valid values: disable, enable. Default value: disable.
+            default_route_table_association = optional(string)      # Whether resource attachments are automatically associated with the default association route table. Valid values: disable, enable. Default value: enable.
+            default_route_table_propagation = optional(string)      #  Whether resource attachments automatically propagate routes to the default propagation route table. Valid values: disable, enable. Default value: enable.
+            description                     = optional(string)      # Description of the EC2 Transit Gateway.
+            dns_support                     = optional(string)      # Whether DNS support is enabled. Valid values: disable, enable. Default value: enable.
+            multicast_support               = optional(string)      # Whether Multicast support is enabled. Required to use ec2_transit_gateway_multicast_domain. Valid values: disable, enable. Default value: disable.
+            tags                            = optional(map(string)) # Key-value tags for the EC2 Transit Gateway. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level.
+            transit_gateway_cidr_blocks     = optional(set(string)) # One or more IPv4 or IPv6 CIDR blocks for the transit gateway. Must be a size /24 CIDR block or larger for IPv4, or a size /64 CIDR block or larger for IPv6.
+            vpn_ecmp_support                = optional(string)      # Whether VPN Equal Cost Multipath Protocol support is enabled. Valid values: disable, enable. Default value: enable.
+          }
+        )
+      )
       vpc = optional( # VPC configuration
         object(
           {
