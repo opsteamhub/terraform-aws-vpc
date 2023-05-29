@@ -2,7 +2,7 @@
 # Create transit gateway for the current VPC
 #
 resource "aws_ec2_transit_gateway" "transit_gateway" {
-  for_each = var.vpc_config.transit_gateway != null ? { for tg in [var.vpc_config.transit_gateway] : tg.description => tg } : {}
+  for_each = var.vpc_config.transit_gateway != null ? { for k, v in var.vpc_config.transit_gateway : k => v } : {}
 
   amazon_side_asn                 = try(each.value.amazon_side_asn, null)
   auto_accept_shared_attachments  = try(each.value.auto_accept_shared_attachments, "disable")
