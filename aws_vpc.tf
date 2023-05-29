@@ -175,3 +175,9 @@ resource "aws_ec2_managed_prefix_list" "managed_prefixlist_internet" {
 
 }
 
+
+
+output "vpc_ids" {
+  description = "The IDs of the VPCs"
+  value       = { for k, v in aws_vpc.vpc : k => try(v.id, null) }
+}

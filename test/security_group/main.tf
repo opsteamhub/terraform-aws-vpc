@@ -79,3 +79,8 @@ module "vpc" {
 
   }
 }
+
+output "vpc_ids" {
+  description = "The IDs of the VPCs created by the module"
+  value       = module.vpc.vpc_ids
+}
