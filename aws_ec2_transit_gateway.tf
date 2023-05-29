@@ -13,20 +13,10 @@ resource "aws_ec2_transit_gateway" "transit_gateway" {
   multicast_support               = try(each.value.multicast_support, "disable")
   vpn_ecmp_support                = try(each.value.vpn_ecmp_support, "enable")
   transit_gateway_cidr_blocks     = try(each.value.transit_gateway_cidr_blocks, null)
-
   tags = merge(
     tomap(
       {
-        "Name" = upper(
-          format(
-            "tgw-%s",
-            coalesce(
-              lookup(each.value.tags, "Name", ""),             # First, try to get the "Name" tag value
-              lookup(var.vpc_config.global.tags, "stack", ""), # If the "Name" tag doesn't exist, try to get the "stack" tag value
-              "terraform-created"                              # If neither of them exists, provide a default value
-            )
-          )
-        )
+        "Name" = upper(each.key)
       }
     ),
     each.value.tags # Merge with the original tags
