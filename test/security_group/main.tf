@@ -84,3 +84,17 @@ output "vpc_ids" {
   description = "The IDs of the VPCs created by the module"
   value       = module.vpc.vpc_ids
 }
+# Output sample
+# vpc_ids = {
+#   "vpc" = "vpc-0e77dcde8e9256947"
+# }
+
+output "sg_ids" {
+  description = "The IDs of the SG created by the module"
+  value       = module.vpc.sg_ids
+}
+# Output sample
+# sg_ids = {
+#   "test_abc" = "sg-0366c296aa6b72863"
+# }
+
