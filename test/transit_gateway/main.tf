@@ -11,11 +11,11 @@ module "vpc" {
         exclude_zone_ids = ["use1-az5"] # Exclude specific availability zones
       }
       tags = {
-        stack              = "dev-opsteam" # Stack tag
-        env                = "development" # Environment tag
-        "opsteam:id"       = "0001"        # OpsTeam ID tag
-        "opsteam:clientid" = "0001"        # OpsTeam Client ID tag
-        "opsteam:env"      = "development" # OpsTeam Environment tag
+        stack              = "Module_development" # Stack tag
+        env                = "development"        # Environment tag
+        "opsteam:id"       = "0001"               # OpsTeam ID tag
+        "opsteam:clientid" = "0001"               # OpsTeam Client ID tag
+        "opsteam:env"      = "development"        # OpsTeam Environment tag
       }
     }
     subnet_layers = [

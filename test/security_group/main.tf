@@ -11,7 +11,7 @@ module "vpc" {
         exclude_zone_ids = ["use1-az5"]
       }
       tags = {
-        stack              = "dev-opsteam"
+        stack              = "Module_development"
         env                = "development"
         "opsteam:id"       = "0001"
         "opsteam:clientid" = "0001"

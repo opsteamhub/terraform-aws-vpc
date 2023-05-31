@@ -5,5 +5,10 @@ output "vpc_ids" {
 
 
 output "sg_ids" {
-  value = { for k in aws_security_group.security_group : k.name => try(k.id, null)}
+  value = { for k in aws_security_group.security_group : k.name => try(k.id, null) }
+}
+
+
+output "vpc_data" {
+  value  = { for k, v in aws_vpc.vpc : k => try(v, null) }
 }
