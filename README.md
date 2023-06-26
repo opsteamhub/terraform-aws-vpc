@@ -6,7 +6,7 @@ This Terraform module provides a flexible way to create and manage AWS VPC confi
 
 ### Variables
 
-To use this module, you must define a root module specifying definitions by variable.
+To use this module, you may to write a root module where you provide a desired VPC configuration using a variable.
 
 #### Variable description
 
@@ -42,7 +42,12 @@ For examples on how to define and structure the aforementioned variables and sub
 
 Examples of how to use this module are available in the `test` directory within the repository. Here, you'll find a variety of scenarios that demonstrate the capabilities of this module. These examples are meant to provide practical guidance and should be adapted to your specific needs.
 
-Remember to replace all placeholder values in the examples with your actual AWS configuration details. In all example files, replace `your_value` with the appropriate data.
+General summary of code samples, by test/folder id:
+* security_group: code sample to launch a VPC with a desired Security Group.
+* simple_vpc: basic configuration to launch a VPC with two subnets (public and a private)
+* transit_gateway: code sample to launch a VPC with transit gateway
+* vpc_default_configs: code sample that presents how to launch a basic VPC usinf default configuration,
+
 
 ### Getting Started
 
