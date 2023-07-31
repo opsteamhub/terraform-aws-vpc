@@ -48,7 +48,7 @@ resource "aws_security_group" "security_group" {
             "sg-%s",
             coalesce(
               try(each.value.name, null),
-              lookup(var.vpc_config.global.tags, "stack", ""),
+              try(lookup(var.vpc_config.global.tags, "stack", ""), null),
               "terraform-created"
             )
           )
