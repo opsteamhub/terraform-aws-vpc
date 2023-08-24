@@ -12,3 +12,7 @@ output "sg_ids" {
 output "vpc_data" {
   value  = { for k, v in aws_vpc.vpc : k => try(v, null) }
 }
+
+output "peering_connection_data" {
+  value  = { for k, v in aws_vpc_peering_connection.peering_connection : k => try(v, null) }
+}
