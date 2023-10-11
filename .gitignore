@@ -5,6 +5,8 @@
 *.tfstate
 *.tfstate.*
 
+# .hcl
+**.hcl
 
 # out files
 **/.out
