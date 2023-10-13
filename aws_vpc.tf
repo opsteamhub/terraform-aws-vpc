@@ -13,6 +13,7 @@ resource "aws_vpc" "vpc" {
   ipv4_netmask_length                  = each.value["ipv4_ipam_pool_id"] != null ? var.vpc_config["vpc"]["ipv4_netmask_length"] : null
   tags = merge(
     local.common_tags,
+    var.vpc_config["vpc"]["tags"],
     {
       Name = upper(
         try(
