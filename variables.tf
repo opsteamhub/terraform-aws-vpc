@@ -119,14 +119,16 @@ variable "vpc_config" {
                 list(
                   object(
                     {
-                      description      = optional(string)      # Description of the egress rule
-                      from_port        = optional(string)      # Starting port range for the egress rule
-                      to_port          = optional(string)      # Ending port range for the egress rule
-                      protocol         = optional(string)      # Protocol to use for the egress rule
-                      cidr_blocks      = optional(set(string)) # List of CIDR blocks for the egress rule
-                      ipv6_cidr_blocks = optional(set(string)) # List of IPv6 CIDR blocks for the egress rule
-                      prefix_list_ids  = optional(set(string)) # List of prefix list IDs for the egress rule
-                      security_groups  = optional(set(string)) # List of security groups to associate with the egress rule
+                      description              = optional(string)      # Description of the egress rule
+                      from_port                = optional(string)      # Starting port range for the egress rule
+                      to_port                  = optional(string)      # Ending port range for the egress rule
+                      protocol                 = optional(string)      # Protocol to use for the egress rule
+                      cidr_blocks              = optional(set(string)) # List of CIDR blocks for the egress rule
+                      ipv6_cidr_blocks         = optional(set(string)) # List of IPv6 CIDR blocks for the egress rule
+                      prefix_list_ids          = optional(set(string)) # List of prefix list IDs for the egress rule
+                      source_security_group_id = optional(string)      # Security group id to allow access to/from, depending on the type. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or self.
+                      self                     = optional(string)      #   Whether the security group itself will be added as a source to this ingress rule. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or source_security_group_id.
+
                     }
                   )
                 )
@@ -135,14 +137,15 @@ variable "vpc_config" {
                 list(
                   object(
                     {
-                      description      = optional(string)      # Description of the ingress rule
-                      from_port        = optional(string)      # Starting port range for the ingress rule
-                      to_port          = optional(string)      # Ending port range for the ingress rule
-                      protocol         = optional(string)      # Protocol to use for the ingress rule
-                      cidr_blocks      = optional(set(string)) # List of CIDR blocks for the ingress rule
-                      ipv6_cidr_blocks = optional(set(string)) # List of IPv6 CIDR blocks for the ingress rule
-                      prefix_list_ids  = optional(set(string)) # List of prefix list IDs for the ingress rule
-                      security_groups  = optional(set(string)) # List of security groups to associate with the ingress rule
+                      description              = optional(string)      # Description of the ingress rule
+                      from_port                = optional(string)      # Starting port range for the ingress rule
+                      to_port                  = optional(string)      # Ending port range for the ingress rule
+                      protocol                 = optional(string)      # Protocol to use for the ingress rule
+                      cidr_blocks              = optional(set(string)) # List of CIDR blocks for the ingress rule
+                      ipv6_cidr_blocks         = optional(set(string)) # List of IPv6 CIDR blocks for the ingress rule
+                      prefix_list_ids          = optional(set(string)) # List of prefix list IDs for the ingress rule
+                      source_security_group_id = optional(string)      # Security group id to allow access to/from, depending on the type. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or self.
+                      self                     = optional(string)      #   Whether the security group itself will be added as a source to this ingress rule. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or source_security_group_id.
                     }
                   )
                 )
