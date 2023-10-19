@@ -1,5 +1,5 @@
 locals {
-  common_tags = var.vpc_config["global"]["tags"]
+  common_tags = try(var.vpc_config["global"]["tags"], null) != null ? var.vpc_config["global"]["tags"] : {}
 }
 
 data "aws_caller_identity" "session" {}
