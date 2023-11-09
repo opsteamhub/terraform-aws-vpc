@@ -115,7 +115,8 @@ resource "aws_vpc_endpoint" "vpc_endpoint_gw" {
     {
       "Name" = format("vpce|%s", each.key)
     },
-    local.common_tags
+    local.common_tags,
+    each.value["tags"]
   )
 
   depends_on = [
@@ -317,7 +318,8 @@ resource "aws_vpc_endpoint" "vpc_endpoint_interface" {
     {
       "Name" = format("vpce-sg--%s", each.key)
     },
-    local.common_tags
+    local.common_tags,
+    each.value["tags"]
   )
 
   depends_on = [
