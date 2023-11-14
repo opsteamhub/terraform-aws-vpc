@@ -149,23 +149,6 @@ variable "vpc_config" {
                     }
                   )
                 )
-              )
-              egress = optional( # Egress rule configuration for the security group
-                list(
-                  object(
-                    {
-                      description              = optional(string)      # Description of the egress rule
-                      from_port                = optional(string)      # Starting port range for the egress rule
-                      to_port                  = optional(string)      # Ending port range for the egress rule
-                      protocol                 = optional(string)      # Protocol to use for the egress rule
-                      cidr_blocks              = optional(set(string)) # List of CIDR blocks for the egress rule
-                      ipv6_cidr_blocks         = optional(set(string)) # List of IPv6 CIDR blocks for the egress rule
-                      prefix_list_ids          = optional(set(string)) # List of prefix list IDs for the egress rule
-                      source_security_group_id = optional(string)      # Security group id to allow access to/from, depending on the type. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or self.
-                      self                     = optional(string)      #   Whether the security group itself will be added as a source to this egress rule. Cannot be specified with cidr_blocks, ipv6_cidr_blocks, or source_security_group_id.
-                    }
-                  )
-                )
               )              
               name_prefix            = optional(string)      # Prefix for the security group name
               name                   = optional(string)      # Name of the security group
