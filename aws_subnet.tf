@@ -275,7 +275,7 @@ resource "aws_route" "r_adhoc" {
   nat_gateway_id = startswith(each.value["target"], "nat-") ? each.value["target"] : null
   #local_gateway_id          = startswith(each.value["target"], "") ? each.value["target"] : null
   network_interface_id      = startswith(each.value["target"], "eni-") ? each.value["target"] : null
-  transit_gateway_id        = startswith(each.value["target"], "twc-") ? each.value["target"] : null
+  transit_gateway_id        = startswith(each.value["target"], "tgw-") ? each.value["target"] : null
   vpc_endpoint_id           = startswith(each.value["target"], "vpce-") ? each.value["target"] : null
   vpc_peering_connection_id = startswith(each.value["target"], "pwc-") ? each.value["target"] : null
 }
