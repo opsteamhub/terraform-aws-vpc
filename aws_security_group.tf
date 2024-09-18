@@ -6,12 +6,12 @@ resource "aws_security_group" "security_group" {
     for sg in var.vpc_config.security_groups:
       sg.name => (
         var.vpc_config["vpc"]["vpc_id"] != null ? merge(
+          sg,
           tomap(
             {
               vpc_id = var.vpc_config["vpc"]["vpc_id"]
             }
-          ),
-          sg
+          )
         ) : sg
       )
     } : {}
