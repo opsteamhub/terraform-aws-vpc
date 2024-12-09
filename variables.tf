@@ -149,7 +149,7 @@ variable "vpc_config" {
                     }
                   )
                 )
-              )
+              )              
               name_prefix            = optional(string)      # Prefix for the security group name
               name                   = optional(string)      # Name of the security group
               revoke_rules_on_delete = optional(string)      # If 'true', will revoke all rules when the security group is deleted.  This is normally not needed, however certain AWS services such as Elastic Map Reduce may automatically add required rules to security groups used with the service, and those rules may contain a cyclic dependency that prevent the security groups from being destroyed without removing the dependency first. Default false.

@@ -189,6 +189,29 @@ resource "aws_security_group" "sg-vpce-interface" {
     }
   }
 
+  dynamic "egress" {
+    for_each = [each.value["listener_ports"]]
+    content {
+      from_port = egress.value["from_port"]
+      to_port   = egress.value["to_port"]
+      protocol  = egress.value["protocol"]
+      cidr_blocks = egress.value["security_groups"] != [] ? toset(
+        [
+          try(
+            aws_vpc.vpc["vpc"].cidr_block,
+            var.vpc_config["vpc"]["cidr_block"]
+          )
+        ]
+      ) : null
+
+      security_groups = try(
+        egress.value["security_groups"],
+        null
+      )
+
+    }
+  }  
+
   tags = merge(
     {
       "Name" = format("vpce-sg--%s", each.key)
