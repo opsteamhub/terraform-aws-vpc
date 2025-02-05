@@ -4,20 +4,20 @@
 resource "aws_security_group_rule" "ingress_rules" {
   for_each = { for item in flatten(
     [
-      for sg in coalesce(var.vpc_config["security_groups"], []):
-        [
-          for rule in sg["ingress"]:
-            merge(
-              rule,
-              tomap(
-                {
-                  "sg_name" = sg["name"]
-                }
-              )
-            )
-        ]
+      for sg in coalesce(var.vpc_config["security_groups"], []) :
+      [
+        for rule in sg["ingress"] :
+        merge(
+          rule,
+          tomap(
+            {
+              "sg_name" = sg["name"]
+            }
+          )
+        )
+      ]
     ]
-  ):
+    ) :
 
     #
     # Joining all itens from the object and converting to string
@@ -52,7 +52,7 @@ resource "aws_security_group_rule" "ingress_rules" {
   prefix_list_ids          = each.value["prefix_list_ids"]
   source_security_group_id = each.value["source_security_group_id"]
   self                     = each.value["self"]
-  security_group_id = aws_security_group.security_group[each.value.sg_name].id
+  security_group_id        = aws_security_group.security_group[each.value.sg_name].id
 }
 
 #
@@ -61,20 +61,20 @@ resource "aws_security_group_rule" "ingress_rules" {
 resource "aws_security_group_rule" "egress_rules" {
   for_each = { for item in flatten(
     [
-      for sg in coalesce(var.vpc_config["security_groups"], []):
-        [
-          for rule in sg["egress"]:
-            merge(
-              rule,
-              tomap(
-                {
-                  "sg_name" = sg["name"]
-                }
-              )
-            )
-        ]
+      for sg in coalesce(var.vpc_config["security_groups"], []) :
+      [
+        for rule in sg["egress"] :
+        merge(
+          rule,
+          tomap(
+            {
+              "sg_name" = sg["name"]
+            }
+          )
+        )
+      ]
     ]
-  ):
+    ) :
 
     #
     # Joining all itens from the object and converting to string

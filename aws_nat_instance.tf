@@ -2,7 +2,7 @@ data "aws_ami" "natinstance_ami" {
   for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "natinstance_ami" : "1" } : {}
 
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["self"] # Clone a imagem da irlanda para sua reguão com o sicript de import_natinstance_ami.sh. Se você estiver rodando codigo par airlanda deve ser owners      = ["amazon"]  Qualquer outra regiao precsara importar a AMI e usar self nessa configuracao
 
   filter {
     name   = "name"

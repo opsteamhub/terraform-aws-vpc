@@ -13,9 +13,9 @@ module "vpc" {
         create = false
       }
       tags = {
-        stack              = "demo-marcus"
-        env                = "production"
-        "opsteam:env"      = "production"
+        stack         = "demo-marcus"
+        env           = "production"
+        "opsteam:env" = "production"
       }
     }
     #nat_gateway = {
@@ -26,23 +26,23 @@ module "vpc" {
     #}
     subnet_layers = [
       {
-        name                                         = "private"
-        netlength                                    = 8
-        netnum = 3
-        scope                                        = "private"
+        name      = "private"
+        netlength = 8
+        netnum    = 3
+        scope     = "private"
         routes = [
           {
-#            az_ids                 = ["use1-az1"] 
+            #            az_ids                 = ["use1-az1"] 
             destination_cidr_block = ["0.0.0.0/0"]
             target                 = "tgw-0d470a797d274d614"
           }
         ]
       },
       {
-        name                                         = "db"
-        netlength                                    = 8
-        netnum                                       = 32
-        scope                                        = "private"
+        name      = "db"
+        netlength = 8
+        netnum    = 32
+        scope     = "private"
       }
     ]
     transit_gateway = {

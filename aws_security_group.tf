@@ -3,18 +3,18 @@
 #
 resource "aws_security_group" "security_group" {
   for_each = var.vpc_config.security_groups != null ? {
-    for sg in var.vpc_config.security_groups:
-      sg.name => (
-        var.vpc_config["vpc"]["vpc_id"] != null ? merge(
-          sg,
-          tomap(
-            {
-              vpc_id = var.vpc_config["vpc"]["vpc_id"]
-            }
-          )
-        ) : sg
-      )
-    } : {}
+    for sg in var.vpc_config.security_groups :
+    sg.name => (
+      var.vpc_config["vpc"]["vpc_id"] != null ? merge(
+        sg,
+        tomap(
+          {
+            vpc_id = var.vpc_config["vpc"]["vpc_id"]
+          }
+        )
+      ) : sg
+    )
+  } : {}
 
   name        = each.value.name
   description = each.value.description

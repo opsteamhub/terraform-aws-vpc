@@ -42,7 +42,7 @@ module "vpc" {
     ],
     peering_connection = [
       {
-        peer_owner_id = "11111111111" #ID da conta de destino
+        peer_owner_id = "11111111111"     #ID da conta de destino
         peer_vpc_id   = "vpc-00000000000" #VPC de destino
         #peer_region   = "us-east-1"
         cidr_blocks = ["172.27.18.0/24"] #CIDR da conta de destino
@@ -57,6 +57,6 @@ module "vpc" {
           values = ["private"] #Nome da VPC que foi criada pelo módulo
         }
       }
-    ]    
+    ]
   }
 }
