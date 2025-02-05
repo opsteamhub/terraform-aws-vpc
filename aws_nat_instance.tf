@@ -1,15 +1,3 @@
-data "aws_ami" "natinstance_ami" {
-  for_each = try(var.vpc_config["nat_instance"]["create"], false) == true ? { "natinstance_ami" : "1" } : {}
-
-  most_recent = true
-  owners      = ["self"] # Clone a imagem da irlanda para sua reguão com o sicript de import_natinstance_ami.sh. Se você estiver rodando codigo par airlanda deve ser owners      = ["amazon"]  Qualquer outra regiao precsara importar a AMI e usar self nessa configuracao
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-vpc-nat*"]
-  }
-}
-
 locals {
 
   #
@@ -323,7 +311,7 @@ resource "aws_launch_template" "natinstance_lt" {
   ) : toset([]) : toset([])
 
   name_prefix   = format("lt-natinstance-%s", each.key)
-  image_id      = data.aws_ami.natinstance_ami["natinstance_ami"].id
+  image_id      = var.vpc_config["nat_instance"]["ami_id"]
   instance_type = var.vpc_config["nat_instance"]["instance_type"]
 
   tags = local.common_tags
