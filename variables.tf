@@ -68,6 +68,7 @@ variable "vpc_config" {
       nat_instance = optional(
         object(
           {
+            ami_id         = optional(string)              #  ID of NatInstance Image imported by `import_natinstance_ami.sh` or console 
             create         = optional(bool, false)         # If 'true', will create a new NAT instance
             az_widerange   = optional(string, 2)           # The wider range of Availability Zones to use for the NAT instance
             az_ids         = optional(set(string))         # List of Availability Zone IDs to use for the NAT instance
@@ -326,4 +327,4 @@ variable "vpc_config" {
       )
     }
   )
-} 
+}

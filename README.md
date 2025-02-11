@@ -2,6 +2,19 @@
 
 This Terraform module provides a flexible way to create and manage AWS VPC configurations. It supports various VPC components such as DHCP options, Internet Gateways, NAT Gateways, VPC Peering Connections, Subnets, and VPC Endpoints.
 
+**ATTENTION: NAT INSTANCE ERROR**
+
+At the end of 2024, it was observed that the current project stopped working because the NAT instance AMI was removed from all AWS regions except Ireland.
+
+To resolve this issue, you need to import the AMI. A script named `import_natinstance_ami.sh` has been created to automate this process.
+
+If you need to modify or re-run the script, use the following commands:
+
+```bash
+chmod +x import_natinstance_ami.sh
+./import_natinstance_ami.sh
+```
+
 ## Usage
 
 ### Variables

@@ -21,9 +21,10 @@ module "vpc" {
     nat_gateway = {
       create = false
     }
-    nat_instance = {
-      create = true
-    }
+    # nat_instance = {
+    #   create = true
+    #   ami_id = "ami-0ca984f09582cece2" #  ID of NatInstance Image imported by `import_natinstance_ami.sh` or console 
+    # }
     subnet_layers = [
       {
         name                                         = "public"
